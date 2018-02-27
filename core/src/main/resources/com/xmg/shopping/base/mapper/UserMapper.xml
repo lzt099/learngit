@@ -1,0 +1,80 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.shopping.base.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.xmg.shopping.base.domain.User">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <result column="registrationTime" property="registrationTime" jdbcType="TIMESTAMP"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="phoneNumber" property="phoneNumber" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="orderNumber" property="orderNumber" jdbcType="INTEGER"/>
+        <result column="totalAmount" property="totalAmount" jdbcType="DECIMAL"/>
+        <result column="useableAmount" property="useableAmount" jdbcType="DECIMAL"/>
+        <result column="grade" property="grade" jdbcType="VARCHAR"/>
+        <result column="score" property="score" jdbcType="INTEGER"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey">
+    delete from user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    insert into user (avatar, registrationTime, username, 
+      phoneNumber, email, password,orderNumber,totalAmount,useableAmount,grade,score)
+    values (#{avatar,jdbcType=VARCHAR}, #{registrationTime,jdbcType=TIMESTAMP}, #{username,jdbcType=VARCHAR},
+      #{phoneNumber,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},#{orderNumber}
+      ,#{totalAmount},#{useableAmount},#{grade},#{score}
+      )
+  </insert>
+    <update id="updateByPrimaryKey">
+    update user
+    set avatar = #{avatar,jdbcType=VARCHAR},
+      registrationTime = #{registrationTime,jdbcType=TIMESTAMP},
+      username = #{username,jdbcType=VARCHAR},
+      phoneNumber = #{phoneNumber,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      orderNumber =#{orderNumber},
+      totalAmount =#{totalAmount},
+      useableAmount =#{useableAmount},
+      grade = #{grade},
+      score = #{score}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select *
+    from user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+    select *
+    from user
+  </select>
+
+    <sql id="base_column">
+        *
+    </sql>
+
+    <sql id="base_where">
+        <where>
+            <if test="username!=null">
+                AND username=#{username}
+            </if>
+        </where>
+    </sql>
+
+    <select id="queryForCount" resultType="int">
+        SELECT count(id)
+        FROM user
+        <include refid="base_where"/>
+    </select>
+
+    <select id="query" resultMap="BaseResultMap">
+        SELECT
+        <include refid="base_column"/>
+        FROM user
+        <include refid="base_where"/>
+        LIMIT #{start},#{pageSize}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.shopping.base.mapper.UserCollectProductMapper">
+    <resultMap id="BaseResultMap" type="com.xmg.shopping.base.domain.UserCollectProduct">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="creatTime" property="creatTime" jdbcType="TIMESTAMP"/>
+        <result column="userId" property="userId" jdbcType="BIGINT"/>
+        <result column="productId" property="productId" jdbcType="BIGINT"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from usercollectproduct
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.xmg.shopping.base.domain.UserCollectProduct" useGeneratedKeys="true"
+            keyProperty="id">
+    insert into usercollectproduct (creatTime, userId, productId
+      )
+    values (#{creatTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}
+      )
+  </insert>
+    <update id="updateByPrimaryKey" parameterType="com.xmg.shopping.base.domain.UserCollectProduct">
+    update usercollectproduct
+    set creatTime = #{creatTime,jdbcType=TIMESTAMP},
+      userId = #{userId,jdbcType=BIGINT},
+      productId = #{productId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select id, creatTime, userId, productId
+    from usercollectproduct
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+    select id, creatTime, userId, productId
+    from usercollectproduct
+  </select>
+
+    <sql id="base_column">
+    *
+  </sql>
+
+    <sql id="base_where">
+        <where>
+            <if test="userId!=null">
+                AND userId=#{userId}
+            </if>
+        </where>
+    </sql>
+
+    <select id="queryForCount" resultType="int">
+        SELECT count(id)
+        FROM usercollectproduct
+        <include refid="base_where"/>
+    </select>
+
+    <select id="query" resultMap="BaseResultMap">
+        SELECT
+        <include refid="base_column"/>
+        FROM usercollectproduct
+        <include refid="base_where"/>
+        LIMIT #{start},#{pageSize}
+    </select>
+
+</mapper>

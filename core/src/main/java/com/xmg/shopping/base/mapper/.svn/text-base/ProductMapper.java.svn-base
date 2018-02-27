@@ -1,0 +1,7 @@
+package com.xmg.shopping.base.mapper;
+
+/**
+ * Created by Z400 on 2016/10/25.
+ */
+public interface ProductMapper {
+}
